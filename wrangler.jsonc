@@ -1,0 +1,9 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "aura-moda-e-estilo",
+  "compatibility_date": "2026-10-11",
+  "assets": {
+    "directory": "./",
+    "binding": "ASSETS"
+  }
+}
