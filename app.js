@@ -155,9 +155,6 @@ function renderArticlesGrid() {
       <article class="article-card" onclick="openArticle('${art.slug}')">
         <div class="article-card-cover">
           <img src="${art.coverImage}" alt="${escapeHtml(art.title)}" loading="lazy">
-          <a href="${pinUrl}" target="_blank" rel="noopener noreferrer" class="pin-save-quick" onclick="event.stopPropagation();" title="Salvar no Pinterest">
-            <i data-lucide="pin"></i>
-          </a>
         </div>
 
         <div class="article-card-body">
@@ -218,15 +215,8 @@ function openArticle(slug) {
   document.getElementById('artCoverImg').src = art.coverImage;
   document.getElementById('artCoverImg').alt = art.title;
 
-  // Botões de Compartilhamento
+  // Botão de Compartilhamento Nativo
   const artUrl = window.location.origin + '#' + art.slug;
-  const pinUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(artUrl)}&media=${encodeURIComponent(art.coverImage)}&description=${encodeURIComponent(art.title)}`;
-  
-  const pinBtn = document.getElementById('artSharePinterest');
-  if (pinBtn) {
-    pinBtn.onclick = () => window.open(pinUrl, '_blank');
-  }
-
   const nativeShare = document.getElementById('artNativeShare');
   if (nativeShare) {
     nativeShare.onclick = () => {
@@ -234,7 +224,7 @@ function openArticle(slug) {
         navigator.share({ title: art.title, url: artUrl });
       } else {
         navigator.clipboard.writeText(artUrl);
-        alert('Link do artigo copiado para a área de transferência!');
+        alert('Link do artigo copiado com sucesso!');
       }
     };
   }
