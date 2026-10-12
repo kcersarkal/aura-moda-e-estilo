@@ -4,29 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <!-- SEO Meta Tags -->
-  <title>Aura Moda & Tendências | Achadinhos de Moda Feminina e Looks</title>
-  <meta name="description" content="Descubra os melhores achadinhos de moda feminina da Shopee e Mercado Livre. Peças selecionadas, vestidos elegantes, conjuntos e inspirações de looks com cupom e frete grátis.">
-  <meta name="keywords" content="achadinhos shopee, moda feminina shopee, vestidos elegantes, calçados femininos, conjuntos alfaiataria, bolsas da moda, looks pinterest">
-  <meta name="author" content="Aura Moda">
+  <!-- SEO Meta Tags Primárias -->
+  <title>Aura Moda & Estilo | Blog de Dicas, Tendências e Looks Femininos</title>
+  <meta name="description" content="Blog de moda feminina e estilo pessoal. Dicas práticas de combinações, guia de tecidos que parecem caros, looks para trabalho e as melhores peças encontradas na internet.">
+  <meta name="keywords" content="blog de moda feminina, dicas de estilo, como vestir elegante gastando pouco, tecidos elegantes shopee, looks pinterest, calça wide leg sapato certo">
+  <meta name="author" content="Aura Moda Editorial">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://seudominio.com/">
 
   <!-- Open Graph / WhatsApp / Facebook -->
-  <meta property="og:type" content="website">
+  <meta property="og:type" content="article">
   <meta property="og:url" content="https://seudominio.com/">
-  <meta property="og:title" content="Aura Moda & Tendências | Achadinhos Femininos">
-  <meta property="og:description" content="Curadoria diária das peças femininas mais bem avaliadas com links oficiais e cupons de desconto.">
+  <meta property="og:title" content="Aura Moda & Estilo | O Blog da Mulher Elegante">
+  <meta property="og:description" content="Aprenda a montar looks sofisticados com inteligência e peças acessíveis. Guias completos de estilo.">
   <meta property="og:image" content="https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=1200&auto=format&fit=crop">
 
   <!-- Pinterest Rich Pins Meta Tags -->
-  <meta property="og:site_name" content="Aura Moda">
+  <meta property="og:site_name" content="Aura Moda & Estilo">
   <meta name="pinterest-rich-pin" content="true">
 
-  <!-- Google Fonts -->
+  <!-- Google Fonts: Playfair Display (Editorial) + Plus Jakarta Sans (Texto fluído) -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
 
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
@@ -36,358 +36,269 @@
 </head>
 <body>
 
-  <!-- Top Announcement Bar -->
+  <!-- Top Editorial Notice -->
   <div class="announcement-bar">
     <div class="container announcement-content">
-      <span>✨ <strong>+1.300 Achadinhos</strong> selecionados com avaliação máxima e cupom ativo</span>
+      <span>📖 <em>Aura Editorial</em> — Curadoria de estilo e guias práticos para vestir bem com inteligência</span>
       <div class="announcement-links">
-        <a href="#produtos" class="quick-link">Ver Achadinhos</a>
-        <a href="#looks" class="quick-link">Inspirações de Looks</a>
+        <a href="#artigos" class="quick-link">Artigos Recentes</a>
+        <a href="#newsletter" class="quick-link">Receber Guias no E-mail</a>
       </div>
     </div>
   </div>
 
-  <!-- Header / Navigation -->
+  <!-- Header Editorial -->
   <header class="site-header" id="header">
     <div class="container nav-container">
       <div class="brand">
-        <a href="#" class="logo">
+        <a href="#" class="logo" id="homeLogoLink">
           <span class="logo-main">AURA</span>
-          <span class="logo-sub">MODA & TENDÊNCIAS</span>
+          <span class="logo-sub">MODA &amp; ESTILO EDITORIAL</span>
         </a>
       </div>
 
-      <!-- Live Search Bar -->
+      <!-- Barra de Busca de Artigos -->
       <div class="search-wrapper">
         <i data-lucide="search" class="search-icon"></i>
-        <input type="text" id="searchInput" placeholder="Buscar vestidos, calçados, saias, conjuntos..." autocomplete="off">
-        <button id="clearSearch" class="clear-search-btn" title="Limpar busca" style="display: none;">
+        <input type="text" id="articleSearchInput" placeholder="Buscar guias de tecidos, calçados, combinações..." autocomplete="off">
+        <button id="clearArticleSearch" class="clear-search-btn" title="Limpar busca" style="display: none;">
           <i data-lucide="x"></i>
         </button>
       </div>
 
-      <!-- Navigation Actions -->
+      <!-- Links de Redes & Pinterest -->
       <div class="header-actions">
-        <a href="#looks" class="nav-btn-link"><i data-lucide="sparkles"></i> <span>Looks</span></a>
-        <a href="#tendencias" class="nav-btn-link"><i data-lucide="book-open"></i> <span>Dicas</span></a>
-        <button id="btnSavedItems" class="icon-circle-btn" title="Itens Salvos">
-          <i data-lucide="heart"></i>
-          <span class="badge-count" id="wishlistCount">0</span>
-        </button>
+        <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" class="btn-pinterest-header">
+          <i data-lucide="pin"></i> <span>Seguir no Pinterest</span>
+        </a>
       </div>
     </div>
   </header>
 
-  <!-- Hero Section (Sem Preços Fixos) -->
-  <section class="hero-section">
-    <div class="container hero-container">
-      <div class="hero-content">
-        <div class="hero-pill">
-          <i data-lucide="sparkles"></i> Curadoria de Tendências & Cupons
-        </div>
-        <h1 class="hero-title">
-          Os achadinhos femininos mais <em>desejados da internet</em>
-        </h1>
-        <p class="hero-subtitle">
-          Selecionamos as melhores peças da Shopee e Mercado Livre com frete facilitado, cupons ativos e avaliação 5 estrelas para você arrasar.
-        </p>
-        <div class="hero-actions">
-          <a href="#produtos" class="btn btn-primary">
-            Explorar Vitrine <i data-lucide="arrow-right"></i>
-          </a>
-          <a href="#looks" class="btn btn-secondary">
-            <i data-lucide="camera"></i> Inspirações de Looks
-          </a>
-        </div>
-        <div class="hero-stats">
-          <div class="stat-item">
-            <strong>+1.300</strong>
-            <span>Peças Curadas</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <strong>4.8 ★</strong>
-            <span>Média de Avaliação</span>
-          </div>
-          <div class="stat-divider"></div>
-          <div class="stat-item">
-            <strong>Atualizado</strong>
-            <span>Direto do Banco</span>
-          </div>
-        </div>
-      </div>
-      <div class="hero-visual">
-        <div class="hero-card-stack">
-          <div class="card-featured">
-            <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop" alt="Look Tendência Moda Feminina" class="featured-img">
-            <div class="featured-overlay">
-              <span class="badge-tag">Destaque da Semana</span>
-              <p class="featured-name">Coleção Elegance & Alfaiataria</p>
-              <div class="featured-status-row">
-                <span class="status-pill"><i data-lucide="zap"></i> Cupom & Frete Grátis</span>
-                <span class="status-store-pill">Shopee Oficial</span>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Category Quick Filters (Alinhados com as categorias do Supabase) -->
-  <section class="categories-bar-section">
+  <!-- Categorias do Blog (Navegação Editorial) -->
+  <nav class="blog-categories-nav">
     <div class="container">
-      <div class="category-chips-wrapper" id="categoryChips">
+      <div class="category-chips-wrapper" id="editorialCategories">
         <button class="chip-item active" data-category="all">
-          <i data-lucide="layout-grid"></i> Todas as Peças
+          <i data-lucide="sparkles"></i> Todos os Artigos
         </button>
-        <button class="chip-item" data-category="Vestidos">
-          <i data-lucide="sparkles"></i> Vestidos
+        <button class="chip-item" data-category="Dicas de Estilo">
+          <i data-lucide="compass"></i> Dicas de Estilo
         </button>
-        <button class="chip-item" data-category="Calcados">
-          <i data-lucide="footprints"></i> Calçados
+        <button class="chip-item" data-category="Combinações & Looks">
+          <i data-lucide="shirt"></i> Combinações &amp; Looks
         </button>
-        <button class="chip-item" data-category="Saias">
-          <i data-lucide="layers"></i> Saias
+        <button class="chip-item" data-category="Guia de Compras">
+          <i data-lucide="shopping-bag"></i> Guia de Compras
         </button>
-        <button class="chip-item" data-category="Calcas">
-          <i data-lucide="briefcase"></i> Calças
-        </button>
-        <button class="chip-item" data-category="Fitness">
-          <i data-lucide="activity"></i> Fitness
-        </button>
-        <button class="chip-item" data-category="Conjuntos">
-          <i data-lucide="shirt"></i> Conjuntos
-        </button>
-        <button class="chip-item" data-category="Bolsas">
-          <i data-lucide="shopping-bag"></i> Bolsas
-        </button>
-        <button class="chip-item" data-category="Shorts">
-          <i data-lucide="sun"></i> Shorts
+        <button class="chip-item" data-category="Ocasiões Especiais">
+          <i data-lucide="heart"></i> Ocasiões Especiais
         </button>
       </div>
     </div>
-  </section>
+  </nav>
 
-  <!-- Main Showcase Section -->
-  <main class="products-section" id="produtos">
-    <div class="container">
+  <!-- VIEW 1: FEED PRINCIPAL DO BLOG -->
+  <div id="blogFeedView">
+    
+    <!-- Hero / Artigo da Capa em Destaque -->
+    <section class="featured-hero-section" id="featuredArticleContainer">
+      <!-- Injetado dinamicamente via app.js -->
+    </section>
+
+    <!-- Main Content & Sidebar Grid -->
+    <div class="container main-editorial-layout" id="artigos">
       
-      <!-- Filters and Sorting Header -->
-      <div class="section-header-bar">
-        <div>
-          <span class="section-tag">Links Oficiais</span>
-          <h2 class="section-title">Vitrine de Achadinhos</h2>
-          <p class="section-desc">Clique para conferir os preços atualizados, cupons e estoque direto na loja parceira.</p>
+      <!-- Coluna Principal: Artigos Recentes -->
+      <main class="articles-main-column">
+        <div class="section-heading-row">
+          <span class="editorial-tag">Leituras Recomendadas</span>
+          <h2 class="editorial-title">Guias Práticos &amp; Tendências</h2>
+          <p class="editorial-subtitle">Conteúdo aprofundado com links para as melhores peças testadas e aprovadas.</p>
         </div>
 
-        <div class="filters-toolbar">
-          <!-- Store Filter -->
-          <div class="select-dropdown">
-            <label for="storeFilter">Loja:</label>
-            <select id="storeFilter">
-              <option value="all">Todas as Lojas</option>
-              <option value="shopee">Shopee</option>
-              <option value="mercadolivre">Mercado Livre</option>
-            </select>
-          </div>
+        <div class="articles-grid" id="articlesGrid">
+          <!-- Renderizado via app.js a partir de artigos.json -->
+        </div>
 
-          <!-- Sort Filter -->
-          <div class="select-dropdown">
-            <label for="sortFilter">Ordenar:</label>
-            <select id="sortFilter">
-              <option value="recent">Mais Recentes</option>
-              <option value="rating">Melhor Avaliados</option>
-            </select>
+        <div id="noArticlesFound" class="empty-state" style="display: none;">
+          <i data-lucide="book-x" class="empty-icon"></i>
+          <h3>Nenhum artigo encontrado</h3>
+          <p>Tente buscar por outro termo ou selecione outra categoria de estilo.</p>
+          <button id="btnResetSearch" class="btn btn-outline">Ver Todos os Artigos</button>
+        </div>
+      </main>
+
+      <!-- Coluna Lateral (Sidebar): Sobre a Curadoria + Peças Recomendadas do Supabase -->
+      <aside class="editorial-sidebar">
+        
+        <!-- Box: Sobre o Blog -->
+        <div class="sidebar-card author-card">
+          <div class="author-avatar-wrap">
+            <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?q=80&w=300&auto=format&fit=crop" alt="Curadoria Aura Moda" class="author-avatar">
+          </div>
+          <h3 class="author-name">Curadoria Aura Moda</h3>
+          <p class="author-bio">
+            Acreditamos que elegância não depende de marcas de luxo. Testamos peças, comparamos tecidos e criamos guias para você se vestir de forma impecável sem estourar o orçamento.
+          </p>
+          <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" class="btn-sidebar-pinterest">
+            <i data-lucide="pin"></i> Nosso Mural no Pinterest
+          </a>
+        </div>
+
+        <!-- Box: Peças Queridinhas da Semana (Alimentado do Supabase!) -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <i data-lucide="sparkles" class="sidebar-icon"></i>
+            <h4 class="sidebar-heading">Achadinhos em Destaque</h4>
+          </div>
+          <p class="sidebar-note">Peças recomendadas nos artigos com avaliação máxima nas lojas oficiais.</p>
+          
+          <div class="sidebar-products-list" id="sidebarProductsList">
+            <!-- Puxado diretamente do Supabase via app.js -->
           </div>
         </div>
+
+        <!-- Box: Mais Lidos da Semana -->
+        <div class="sidebar-card">
+          <div class="sidebar-card-header">
+            <i data-lucide="trending-up" class="sidebar-icon"></i>
+            <h4 class="sidebar-heading">Guias Mais Lidos</h4>
+          </div>
+          <div class="popular-articles-list" id="popularArticlesList">
+            <!-- Injetado dinamicamente -->
+          </div>
+        </div>
+
+      </aside>
+    </div>
+  </div>
+
+  <!-- VIEW 2: LEITURA COMPLETA DE ARTIGO (ARTIGO DETAIL VIEW) -->
+  <article id="articleDetailView" class="article-detail-container" style="display: none;">
+    <div class="container article-read-wrapper">
+      
+      <button id="btnBackToFeed" class="back-to-feed-btn">
+        <i data-lucide="arrow-left"></i> Voltar para todos os artigos
+      </button>
+
+      <header class="article-full-header">
+        <div class="article-meta-badges">
+          <span class="article-category-badge" id="artCatBadge">Dicas de Estilo</span>
+          <span class="article-readtime" id="artReadTime"><i data-lucide="clock"></i> 6 min</span>
+          <span class="article-date" id="artDate">Outubro 2026</span>
+        </div>
+        <h1 class="article-full-title" id="artTitle">Título do Artigo</h1>
+        <p class="article-full-excerpt" id="artExcerpt">Resumo do artigo</p>
+        
+        <div class="article-share-bar">
+          <button class="share-btn pinterest-btn" id="artSharePinterest">
+            <i data-lucide="pin"></i> Salvar este Guia no Pinterest
+          </button>
+          <button class="share-btn native-share" id="artNativeShare">
+            <i data-lucide="share-2"></i> Compartilhar
+          </button>
+        </div>
+      </header>
+
+      <div class="article-full-cover">
+        <img id="artCoverImg" src="" alt="Capa do Artigo">
       </div>
 
-      <!-- Active Filter Tags Display -->
-      <div id="activeFiltersContainer" class="active-filters-row"></div>
-
-      <!-- Loading Indicator -->
-      <div id="loadingState" class="loading-state" style="display: none;">
-        <div class="spinner"></div>
-        <p>Carregando os melhores achadinhos...</p>
+      <!-- Corpo do Artigo com Parágrafos, Títulos e Boxes de Afiliados -->
+      <div class="article-body-content" id="artBody">
+        <!-- Injetado via app.js -->
       </div>
 
-      <!-- Product Grid -->
-      <div class="product-grid" id="productGrid">
-        <!-- Products will be injected dynamically via app.js from Supabase -->
-      </div>
+      <!-- Rodapé do Artigo -->
+      <footer class="article-full-footer">
+        <div class="affiliate-disclosure-box">
+          <i data-lucide="info"></i>
+          <p>
+            <strong>Transparência Editorial:</strong> As peças mencionadas neste artigo foram selecionadas de forma independente pela nossa equipe. Ao comprar pelos nossos links oficiais na Shopee ou Mercado Livre, podemos receber uma comissão de afiliado sem nenhum custo adicional para você. Os valores oficiais e estoque são determinados pelas lojas parceiras.
+          </p>
+        </div>
 
-      <!-- Pagination / Load More Button -->
-      <div class="load-more-container" id="loadMoreContainer" style="display: none;">
-        <button id="btnLoadMore" class="btn btn-secondary">
-          <i data-lucide="refresh-cw"></i> Carregar Mais Achadinhos
-        </button>
-      </div>
-
-      <!-- Empty State -->
-      <div id="emptyState" class="empty-state" style="display: none;">
-        <i data-lucide="search-x" class="empty-icon"></i>
-        <h3>Nenhum achadinho encontrado</h3>
-        <p>Tente buscar por outro termo ou selecione outra categoria.</p>
-        <button id="resetFiltersBtn" class="btn btn-outline">Ver Todas as Peças</button>
-      </div>
+        <div class="article-bottom-nav">
+          <button class="btn btn-primary" onclick="showBlogFeed()">
+            <i data-lucide="book-open"></i> Explorar Outros Artigos
+          </button>
+        </div>
+      </footer>
 
     </div>
-  </main>
-
-  <!-- "Monte o Look" / Pinterest Style Inspiration Section -->
-  <section class="looks-section" id="looks">
-    <div class="container">
-      <div class="text-center-wrapper">
-        <span class="section-tag">Inspirações Reais</span>
-        <h2 class="section-title">Composições & Looks do Pinterest</h2>
-        <p class="section-desc">Ideias de combinações elegantes para você salvar no seu Pinterest e reproduzir gastando pouco.</p>
-      </div>
-
-      <div class="looks-grid" id="looksGrid">
-        <!-- Dynamically filled with curated looks -->
-      </div>
-    </div>
-  </section>
-
-  <!-- SEO Blog / Guia de Tendências -->
-  <section class="tips-section" id="tendencias">
-    <div class="container">
-      <div class="text-center-wrapper">
-        <span class="section-tag">Blog & Dicas de Moda</span>
-        <h2 class="section-title">Tendências & Dicas de Estilo</h2>
-        <p class="section-desc">Artigos práticos para acertar nas compras online de moda feminina.</p>
-      </div>
-
-      <div class="tips-grid">
-        <article class="tip-card">
-          <div class="tip-img-wrap">
-            <img src="https://images.unsplash.com/photo-1485230895905-ec40ba36b9bc?q=80&w=800&auto=format&fit=crop" alt="Guia de Tecidos Elegantes">
-            <span class="tip-badge">Guia de Estilo</span>
-          </div>
-          <div class="tip-content">
-            <span class="tip-date">Dica de Compra</span>
-            <h3 class="tip-title">Como encontrar roupas na Shopee com acabamento de boutique</h3>
-            <p class="tip-excerpt">O segredo das avaliações com fotos reais, tipos de tecidos que não amarrotam e lojas com melhor reputação.</p>
-            <a href="#produtos" class="tip-link">Ver peças recomendadas <i data-lucide="chevron-right"></i></a>
-          </div>
-        </article>
-
-        <article class="tip-card">
-          <div class="tip-img-wrap">
-            <img src="https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop" alt="Calça Alfaiataria e Wide Leg">
-            <span class="tip-badge">Tendência 2026</span>
-          </div>
-          <div class="tip-content">
-            <span class="tip-date">Tendência em alta</span>
-            <h3 class="tip-title">Como usar saia midi plissada e calça pantalona em qualquer ocasião</h3>
-            <p class="tip-excerpt">Combinações certeiras que alongam a silhueta e transmitem elegância sem abrir mão do conforto durante todo o dia.</p>
-            <a href="#produtos" class="tip-link">Ver peças em destaque <i data-lucide="chevron-right"></i></a>
-          </div>
-        </article>
-
-        <article class="tip-card">
-          <div class="tip-img-wrap">
-            <img src="https://images.unsplash.com/photo-1469334031218-e382a71b716b?q=80&w=800&auto=format&fit=crop" alt="Guia de Medidas Roupas Online">
-            <span class="tip-badge">Dica de Ouro</span>
-          </div>
-          <div class="tip-content">
-            <span class="tip-date">Segurança na compra</span>
-            <h3 class="tip-title">Como escolher calçados e vestidos online sem errar a medida</h3>
-            <p class="tip-excerpt">Dicas infalíveis para medir o pé, comparar a tabela do vendedor e garantir a numeração ideal de primeira.</p>
-            <a href="#produtos" class="tip-link">Conferir calçados <i data-lucide="chevron-right"></i></a>
-          </div>
-        </article>
-      </div>
-    </div>
-  </section>
+  </article>
 
   <!-- Newsletter / Grupo VIP -->
-  <section class="vip-section">
+  <section class="vip-section" id="newsletter">
     <div class="container vip-container">
       <div class="vip-icon-box">
-        <i data-lucide="bell-ring"></i>
+        <i data-lucide="mail"></i>
       </div>
       <div class="vip-text">
-        <h2 class="vip-title">Receba Achadinhos & Cupons Relâmpago</h2>
-        <p class="vip-desc">Cadastre-se para não perder quando uma peça queridinha entrar em promoção com estoque limitado.</p>
+        <h2 class="vip-title">Receba Novos Guias de Estilo</h2>
+        <p class="vip-desc">Inscreva-se gratuitamente para receber nossas análises de tecidos, combinações de looks e alertas de peças de boutique na internet.</p>
       </div>
-      <form class="vip-form" onsubmit="event.preventDefault(); alert('Inscrição confirmada com sucesso! Você receberá as melhores novidades.');">
-        <input type="email" placeholder="Seu melhor e-mail ou WhatsApp" required>
-        <button type="submit" class="btn btn-primary">Quero Receber</button>
+      <form class="vip-form" onsubmit="event.preventDefault(); alert('Inscrição confirmada com sucesso! Você receberá nossos próximos artigos de moda.');">
+        <input type="email" placeholder="Seu melhor e-mail" required>
+        <button type="submit" class="btn btn-primary">Inscrever-se</button>
       </form>
     </div>
   </section>
 
-  <!-- Modal Detalhes do Produto (Sem Preço Fixo) -->
-  <div class="modal-backdrop" id="productModal" style="display: none;">
-    <div class="modal-content">
-      <button class="modal-close-btn" id="closeModalBtn" title="Fechar">
-        <i data-lucide="x"></i>
-      </button>
-
-      <div class="modal-body" id="modalBody">
-        <!-- Injetado via JavaScript com link de afiliado oficial -->
-      </div>
-    </div>
-  </div>
-
-  <!-- Footer -->
+  <!-- Footer do Blog -->
   <footer class="site-footer">
     <div class="container footer-container">
       <div class="footer-col brand-col">
         <div class="logo">
           <span class="logo-main">AURA</span>
-          <span class="logo-sub">MODA & TENDÊNCIAS</span>
+          <span class="logo-sub">MODA &amp; ESTILO EDITORIAL</span>
         </div>
         <p class="footer-bio">
-          O seu portal de curadoria de moda feminina. Selecionamos diariamente as peças com melhor avaliação e custo-benefício das maiores lojas da internet.
+          O portal editorial para a mulher contemporânea. Guias de estilo, análise de caimento, truques de imagem e recomendações sinceras de peças que valem a pena.
         </p>
         <div class="social-links">
-          <a href="https://pinterest.com" target="_blank" rel="noopener" class="social-icon" title="Siga no Pinterest">
+          <a href="https://pinterest.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Pinterest">
             <i data-lucide="pin"></i>
           </a>
-          <a href="https://instagram.com" target="_blank" rel="noopener" class="social-icon" title="Instagram">
+          <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" class="social-icon" title="Instagram">
             <i data-lucide="instagram"></i>
-          </a>
-          <a href="#" class="social-icon" title="Grupo VIP">
-            <i data-lucide="send"></i>
           </a>
         </div>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading">Categorias Populares</h4>
+        <h4 class="footer-heading">Categorias do Blog</h4>
         <ul class="footer-nav">
-          <li><a href="#produtos">Vestidos Elegantes</a></li>
-          <li><a href="#produtos">Calçados & Sandálias</a></li>
-          <li><a href="#produtos">Saias Plissadas & Midi</a></li>
-          <li><a href="#produtos">Conjuntos & Calças</a></li>
+          <li><a href="#" onclick="filterByCategory('Dicas de Estilo'); return false;">Dicas de Estilo</a></li>
+          <li><a href="#" onclick="filterByCategory('Combinações & Looks'); return false;">Combinações &amp; Looks</a></li>
+          <li><a href="#" onclick="filterByCategory('Guia de Compras'); return false;">Guia de Compras</a></li>
+          <li><a href="#" onclick="filterByCategory('Ocasiões Especiais'); return false;">Ocasiões Especiais</a></li>
         </ul>
       </div>
 
       <div class="footer-col">
-        <h4 class="footer-heading">Lojas Parceiras</h4>
+        <h4 class="footer-heading">Tópicos em Alta</h4>
         <ul class="footer-nav">
-          <li><a href="#produtos">Shopee Oficial</a></li>
-          <li><a href="#produtos">Mercado Livre</a></li>
-          <li><a href="#produtos">Lojas Nacionais</a></li>
-          <li><a href="#produtos">Internacionais</a></li>
+          <li><a href="#" onclick="searchTopic('tecidos'); return false;">Tecidos que Parecem Caros</a></li>
+          <li><a href="#" onclick="searchTopic('wide leg'); return false;">Sapatos para Calça Wide Leg</a></li>
+          <li><a href="#" onclick="searchTopic('capsula'); return false;">Guarda-Roupa Cápsula</a></li>
+          <li><a href="#" onclick="searchTopic('vestidos'); return false;">Vestidos Midi Elegantes</a></li>
         </ul>
       </div>
 
       <div class="footer-col affiliate-disclaimer-col">
-        <h4 class="footer-heading">Transparência & Afiliados</h4>
+        <h4 class="footer-heading">Transparência Editorial</h4>
         <p class="disclaimer-text">
-          Este site participa de programas oficiais de afiliados da Shopee e Mercado Livre. Ao clicar nos links e realizar compras, podemos receber uma comissão sem qualquer acréscimo no valor final para você. Os preços e estoques estão sujeitos a alterações diretas nas lojas parceiras.
+          O Aura Moda participa dos programas de afiliados oficiais da Shopee e Mercado Livre. Sempre que você clica em um link de recomendação e conclui uma compra, podemos receber uma comissão sem qualquer custo extra para você. Nossa curadoria é 100% independente e focada em qualidade de caimento e reputação das lojas.
         </p>
       </div>
     </div>
 
     <div class="footer-bottom">
       <div class="container footer-bottom-content">
-        <p>&copy; 2026 Aura Moda & Tendências. Todos os direitos reservados.</p>
-        <p>Hospedado no Cloudflare Pages • Conectado ao Supabase</p>
+        <p>&copy; 2026 Aura Moda &amp; Estilo. Todos os direitos reservados.</p>
+        <p>Hospedado via Cloudflare Pages • Integrado ao Supabase &amp; Pinterest API</p>
       </div>
     </div>
   </footer>
