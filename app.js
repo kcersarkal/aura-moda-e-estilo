@@ -1,182 +1,49 @@
 // ===================================================================
-// AURA MODA & TENDÊNCIAS - CORE APP JAVASCRIPT
+// AURA MODA & TENDÊNCIAS - CORE APP (SUPABASE INTEGRATION)
 // ===================================================================
 
+const SUPABASE_URL = "https://edzagtvukayclklhvokk.supabase.co/rest/v1";
+const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkemFndHZ1a2F5Y2xrbGh2b2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNjgzNTQsImV4cCI6MjEwMDY0NDM1NH0.dAfwIDKyLB-KCFCxZkWIIO_fWibhOXa2Ax_RT3KFXjM";
+
+const PAGE_SIZE = 36;
+let currentOffset = 0;
+let hasMoreItems = true;
+let isLoading = false;
+
 let allProducts = [];
-let allLooks = [];
 let activeCategory = 'all';
 let activeStore = 'all';
 let currentSearch = '';
-let currentSort = 'popular';
+let currentSort = 'recent';
 let wishlist = JSON.parse(localStorage.getItem('aura_wishlist') || '[]');
 
-// Fallback de dados para garantir funcionamento até mesmo em visualização local direta
-const FALLBACK_DATA = {
-  products: [
-    {
-      id: "prod-1",
-      title: "Vestido Midi Canelado Gola Alta Fenda Lateral Elegance",
-      category: "Vestidos",
-      store: "Shein",
-      originalPrice: 129.90,
-      currentPrice: 59.90,
-      discountPercentage: 54,
-      rating: 4.9,
-      reviewsCount: 2480,
-      imageUrl: "https://images.unsplash.com/photo-1595777457583-95e059d581b8?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/vestido-midi",
-      freeShipping: true,
-      description: "Vestido midi com modelagem impecável que valoriza a silhueta sem marcar. Tecido canelado premium de alta elasticidade com acabamento em gola alta suave e fenda lateral moderna.",
-      features: ["Tecido canelado encorpado", "Não fica transparente", "Comprimento midi clássico", "Ideal para salto ou tênis"],
-      tags: ["vestidos", "midi", "elegante", "shein", "festa"]
-    },
-    {
-      id: "prod-2",
-      title: "Conjunto Alfaiataria Colete e Calça Wide Leg Linho Bege",
-      category: "Conjuntos",
-      store: "Shopee",
-      originalPrice: 189.90,
-      currentPrice: 89.90,
-      discountPercentage: 52,
-      rating: 4.8,
-      reviewsCount: 1340,
-      imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/conjunto-alfaiataria",
-      freeShipping: true,
-      description: "O conjunto queridinho do Pinterest. Colete cropped estruturado com botões forrados acompanhado de calça pantalona wide leg de cós alto e caimento impecável.",
-      features: ["Toque de linho com elastano", "Cintura alta com passantes", "Botões decorativos refinados", "Caimento alfaiataria"],
-      tags: ["conjuntos", "alfaiataria", "shopee", "trabalho", "linho"]
-    },
-    {
-      id: "prod-3",
-      title: "Calça Pantalona Alfaiataria Cinto Encapado Nude",
-      category: "Alfaiataria",
-      store: "Shopee",
-      originalPrice: 119.90,
-      currentPrice: 54.90,
-      discountPercentage: 54,
-      rating: 4.9,
-      reviewsCount: 5120,
-      imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/calca-pantalona",
-      freeShipping: true,
-      description: "Peça coringa para looks elegantes de trabalho ou eventos casuais. Acompanha cinto encapado no mesmo tom e possui corte reto que alonga as pernas.",
-      features: ["Tecido Crepe Two Way encorpado", "Acompanha cinto", "Bolsos laterais faca funcionais", "Não amassa fácil"],
-      tags: ["alfaiataria", "calca", "pantalona", "trabalho", "shopee"]
-    },
-    {
-      id: "prod-4",
-      title: "Bolsa Feminina Baguette Alça Corrente Dourada Off-White",
-      category: "Bolsas",
-      store: "Shein",
-      originalPrice: 89.90,
-      currentPrice: 42.90,
-      discountPercentage: 52,
-      rating: 4.7,
-      reviewsCount: 890,
-      imageUrl: "https://images.unsplash.com/photo-1584917865442-de89df76afd3?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/bolsa-baguette",
-      freeShipping: false,
-      description: "Bolsa minimalista formato baguette com alça trançada e detalhe em corrente metálica banhada a dourado. Espaçosa e muito sofisticada.",
-      features: ["Couro ecológico texturizado", "Fechamento em zíper resistente", "Alça regulável removível", "Ferragens douradas"],
-      tags: ["bolsas", "acessorios", "shein", "baguette"]
-    },
-    {
-      id: "prod-5",
-      title: "Sandália Salto Bloco Tiras Finas Amarrar Nude Chic",
-      category: "Calçados",
-      store: "Amazon",
-      originalPrice: 159.90,
-      currentPrice: 79.90,
-      discountPercentage: 50,
-      rating: 4.8,
-      reviewsCount: 970,
-      imageUrl: "https://images.unsplash.com/photo-1543163521-1bf539c55dd2?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/sandalia-salto-bloco",
-      freeShipping: true,
-      description: "Conforto e estabilidade absoluta. Salto bloco de 6cm com palmilha acolchoada e tiras delicadas de amarração no tornozelo.",
-      features: ["Salto bloco estável 6cm", "Palmilha ultra conforto", "Solado antiderrapante", "Tiras macias que não machucam"],
-      tags: ["calcados", "sandalias", "amazon", "festa", "salto"]
-    },
-    {
-      id: "prod-6",
-      title: "Camisa Feminina Oversized 100% Algodão Branco Clássico",
-      category: "Casual",
-      store: "Renner",
-      originalPrice: 149.90,
-      currentPrice: 69.90,
-      discountPercentage: 53,
-      rating: 4.9,
-      reviewsCount: 310,
-      imageUrl: "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/camisa-oversized",
-      freeShipping: true,
-      description: "A camisa branca indispensável em qualquer guarda-roupa cápsula. Modelagem ampla oversized moderna para usar aberta ou fechada.",
-      features: ["Toque puro algodão macio", "Botões madrepérola", "Caimento soltinho e elegante", "Alta durabilidade"],
-      tags: ["casual", "camisa", "renner", "basico", "elegante"]
-    },
-    {
-      id: "prod-7",
-      title: "Vestido Longo Floral Decote V Babados Boho Romântico",
-      category: "Vestidos",
-      store: "Shein",
-      originalPrice: 169.90,
-      currentPrice: 78.90,
-      discountPercentage: 54,
-      rating: 4.8,
-      reviewsCount: 1820,
-      imageUrl: "https://images.unsplash.com/photo-1572804013309-59a88b7e92f1?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/vestido-longo-floral",
-      freeShipping: true,
-      description: "Vestido fluído longo com estampa floral sutil, saia três marias com babados delicados e ajuste com amarração na cintura.",
-      features: ["Tecido chiffon leve com forro", "Cintura com elastex", "Caimento fluido e leve", "Ideal para passeios e ensaios"],
-      tags: ["vestidos", "longo", "floral", "shein", "romantico"]
-    },
-    {
-      id: "prod-8",
-      title: "Blazer Feminino Alfaiataria Estruturado Alongado Preto",
-      category: "Alfaiataria",
-      store: "Shopee",
-      originalPrice: 199.90,
-      currentPrice: 94.90,
-      discountPercentage: 52,
-      rating: 4.9,
-      reviewsCount: 3410,
-      imageUrl: "https://images.unsplash.com/photo-1548624149-f9b1859aa9d0?q=80&w=800&auto=format&fit=crop",
-      affiliateUrl: "https://seu-link-de-afiliado.com/blazer-alfaiataria",
-      freeShipping: true,
-      description: "Blazer modelo maxi com ombreiras suaves que alinham a postura e modelagem acinturada. Bolsos decorativos e tecido com caimento impecável.",
-      features: ["Forro interno acetinado", "Ombreiras estruturadas leves", "Corte alongado moderno", "Combina do jeans ao vestido"],
-      tags: ["alfaiataria", "blazer", "shopee", "trabalho", "preto"]
-    }
-  ],
-  looks: [
-    {
-      id: "look-1",
-      title: "Look Brunch Elegante em Tons Terrosos",
-      occasion: "Final de Semana & Brunch",
-      imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
-      description: "Combinação sofisticada e leve para um almoço com amigas ou passeio ao ar livre com cores quentes e tecidos naturais.",
-      pieces: [
-        { name: "Conjunto Alfaiataria Nude", store: "Shopee", price: "R$ 89,90", link: "#produtos" },
-        { name: "Bolsa Baguette Off-White", store: "Shein", price: "R$ 42,90", link: "#produtos" },
-        { name: "Sandália Salto Bloco", store: "Amazon", price: "R$ 79,90", link: "#produtos" }
-      ]
-    },
-    {
-      id: "look-2",
-      title: "Office Look Minimalista & Confortável",
-      occasion: "Trabalho & Reuniões",
-      imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop",
-      description: "Equilíbrio perfeito entre seriedade e estilo contemporâneo, sem abrir mão do conforto durante o dia inteiro.",
-      pieces: [
-        { name: "Calça Pantalona Cinto Nude", store: "Shopee", price: "R$ 54,90", link: "#produtos" },
-        { name: "Camisa Oversized Algodão", store: "Renner", price: "R$ 69,90", link: "#produtos" },
-        { name: "Blazer Preto Estruturado", store: "Shopee", price: "R$ 94,90", link: "#produtos" }
-      ]
-    }
-  ]
-};
+// Inspirações de Looks curadas
+const CURATED_LOOKS = [
+  {
+    id: "look-1",
+    title: "Look Elegante de Trabalho com Pantalona & Alfaiataria",
+    occasion: "Trabalho & Reuniões",
+    imageUrl: "https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?q=80&w=800&auto=format&fit=crop",
+    description: "Composição refinada para o dia a dia profissional com tecidos leves e corte estruturado.",
+    pieces: [
+      { name: "Calça Alfaiataria Cós Alto", store: "Shopee", link: "#produtos" },
+      { name: "Colete Estruturado Nude", store: "Shopee", link: "#produtos" },
+      { name: "Scarpin Bico Fino", store: "Mercado Livre", link: "#produtos" }
+    ]
+  },
+  {
+    id: "look-2",
+    title: "Composição Casual Chic com Vestido & Sandália",
+    occasion: "Final de Semana & Passeio",
+    imageUrl: "https://images.unsplash.com/photo-1509631179647-0177331693ae?q=80&w=800&auto=format&fit=crop",
+    description: "Equilíbrio entre charme feminino e frescor para passeios, encontros e viagens.",
+    pieces: [
+      { name: "Vestido Midi Plissado", store: "Shopee", link: "#produtos" },
+      { name: "Bolsa Meia Lua Transversal", store: "Shopee", link: "#produtos" },
+      { name: "Tamanco Bico Folha Dourado", store: "Shopee", link: "#produtos" }
+    ]
+  }
+];
 
 // ===================================================================
 // INICIALIZAÇÃO
@@ -184,61 +51,116 @@ const FALLBACK_DATA = {
 document.addEventListener('DOMContentLoaded', async () => {
   updateWishlistBadge();
   setupEventListeners();
-
-  try {
-    const res = await fetch('products.json');
-    if (!res.ok) throw new Error('Falha ao carregar JSON local');
-    const data = await res.json();
-    allProducts = data.products || [];
-    allLooks = data.looks || [];
-  } catch (err) {
-    console.warn('Carregando dados de fallback integrados:', err);
-    allProducts = FALLBACK_DATA.products;
-    allLooks = FALLBACK_DATA.looks;
-  }
-
-  renderProducts();
   renderLooks();
-  refreshIcons();
+  
+  await fetchProductsFromSupabase(true);
 });
 
 // ===================================================================
-// RENDERIZAÇÃO DE PRODUTOS
+// BUSCA DE PRODUTOS NO SUPABASE REST API
 // ===================================================================
-function renderProducts() {
+async function fetchProductsFromSupabase(isReset = false) {
+  if (isLoading) return;
+  isLoading = true;
+
+  const loadingEl = document.getElementById('loadingState');
+  const loadMoreBtn = document.getElementById('btnLoadMore');
+  const loadMoreContainer = document.getElementById('loadMoreContainer');
+  
+  if (isReset) {
+    currentOffset = 0;
+    allProducts = [];
+    if (loadingEl) loadingEl.style.display = 'flex';
+  } else {
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = true;
+      loadMoreBtn.innerHTML = `<span class="spinner-sm"></span> Carregando...`;
+    }
+  }
+
+  try {
+    // Parâmetros da Query
+    const params = new URLSearchParams();
+    params.set('select', 'id,name,category,image,description,rating,reviews_count,affiliate_url,source,tag,spotlight');
+    params.set('limit', PAGE_SIZE);
+    params.set('offset', currentOffset);
+
+    // Filtros no Banco
+    if (activeCategory !== 'all') {
+      params.set('category', `ilike.%${activeCategory}%`);
+    }
+
+    if (activeStore !== 'all') {
+      params.set('source', `eq.${activeStore.toLowerCase()}`);
+    }
+
+    if (currentSearch.trim()) {
+      params.set('name', `ilike.%${currentSearch.trim()}%`);
+    }
+
+    // Ordenação
+    if (currentSort === 'rating') {
+      params.set('order', 'rating.desc,id.desc');
+    } else {
+      params.set('order', 'id.desc');
+    }
+
+    const response = await fetch(`${SUPABASE_URL}/produtos?${params.toString()}`, {
+      method: 'GET',
+      headers: {
+        'apikey': SUPABASE_ANON_KEY,
+        'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+        'Content-Type': 'application/json'
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erro Supabase: ${response.statusText}`);
+    }
+
+    const items = await response.json();
+
+    if (isReset) {
+      allProducts = items;
+    } else {
+      allProducts = [...allProducts, ...items];
+    }
+
+    hasMoreItems = items.length === PAGE_SIZE;
+    currentOffset += items.length;
+
+    renderProductsGrid();
+
+    if (loadMoreContainer) {
+      loadMoreContainer.style.display = hasMoreItems ? 'flex' : 'none';
+    }
+
+  } catch (error) {
+    console.error('Erro ao conectar ao Supabase:', error);
+    // Fallback: se houver falha de rede ou CORS, renderiza produtos locais
+    if (allProducts.length === 0) {
+      renderFallbackNotice();
+    }
+  } finally {
+    isLoading = false;
+    if (loadingEl) loadingEl.style.display = 'none';
+    if (loadMoreBtn) {
+      loadMoreBtn.disabled = false;
+      loadMoreBtn.innerHTML = `<i data-lucide="refresh-cw"></i> Carregar Mais Achadinhos`;
+      refreshIcons();
+    }
+  }
+}
+
+// ===================================================================
+// RENDERIZAÇÃO DO GRID DE PRODUTOS (SEM PREÇO NUMÉRICO)
+// ===================================================================
+function renderProductsGrid() {
   const grid = document.getElementById('productGrid');
   const emptyState = document.getElementById('emptyState');
   if (!grid) return;
 
-  // Filtragem
-  let filtered = allProducts.filter(item => {
-    // Filtro por Categoria
-    const matchesCategory = (activeCategory === 'all') || (item.category.toLowerCase() === activeCategory.toLowerCase());
-    
-    // Filtro por Loja
-    const matchesStore = (activeStore === 'all') || (item.store.toLowerCase() === activeStore.toLowerCase());
-    
-    // Filtro por Busca
-    const q = currentSearch.toLowerCase().trim();
-    const matchesSearch = !q || 
-      item.title.toLowerCase().includes(q) ||
-      item.category.toLowerCase().includes(q) ||
-      item.store.toLowerCase().includes(q) ||
-      (item.tags && item.tags.some(tag => tag.toLowerCase().includes(q)));
-
-    return matchesCategory && matchesStore && matchesSearch;
-  });
-
-  // Ordenação
-  filtered.sort((a, b) => {
-    if (currentSort === 'lowest') return a.currentPrice - b.currentPrice;
-    if (currentSort === 'highest') return b.currentPrice - a.currentPrice;
-    if (currentSort === 'discount') return b.discountPercentage - a.discountPercentage;
-    return b.rating - a.rating; // default: popular
-  });
-
-  // Estado Vazio
-  if (filtered.length === 0) {
+  if (allProducts.length === 0) {
     grid.innerHTML = '';
     if (emptyState) emptyState.style.display = 'block';
     return;
@@ -246,24 +168,27 @@ function renderProducts() {
 
   if (emptyState) emptyState.style.display = 'none';
 
-  // Render dos Cards
-  grid.innerHTML = filtered.map(prod => {
+  grid.innerHTML = allProducts.map(prod => {
     const isSaved = wishlist.includes(prod.id);
-    const pinterestShareUrl = getPinterestShareUrl(prod);
+    const storeLabel = (prod.source === 'mercadolivre') ? 'Mercado Livre' : 'Shopee';
+    const storeClass = (prod.source === 'mercadolivre') ? 'MercadoLivre' : 'Shopee';
+    const ratingValue = prod.rating ? Number(prod.rating).toFixed(1) : '4.9';
+    const destinationUrl = prod.affiliate_url && prod.affiliate_url !== '#' ? prod.affiliate_url : 'https://shopee.com.br';
+    const pinterestShareUrl = getPinterestShareUrl(prod, storeLabel, destinationUrl);
 
     return `
       <article class="product-card" data-id="${prod.id}">
         <div class="product-card-media">
-          <img src="${prod.imageUrl}" alt="${prod.title}" loading="lazy">
+          <img src="${prod.image}" alt="${escapeHtml(prod.name)}" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1490481651871-ab68de25d43d?q=80&w=800&auto=format&fit=crop'">
           
           <div class="product-badges">
-            <span class="store-badge ${prod.store}">${prod.store}</span>
-            <span class="discount-tag">-${prod.discountPercentage}% OFF</span>
+            <span class="store-badge ${storeClass}">${storeLabel}</span>
+            <span class="discount-tag">Cupom & Oferta</span>
           </div>
 
           <div class="product-actions-floating">
             <button class="btn-float-action ${isSaved ? 'saved' : ''}" 
-                    onclick="toggleWishlist('${prod.id}')" 
+                    onclick="toggleWishlist(${prod.id})" 
                     title="${isSaved ? 'Remover dos favoritos' : 'Salvar favorito'}">
               <i data-lucide="heart"></i>
             </button>
@@ -279,30 +204,33 @@ function renderProducts() {
 
         <div class="product-card-body">
           <div class="product-meta-row">
-            <span class="product-category-name">${prod.category}</span>
+            <span class="product-category-name">${prod.category || 'Moda Feminina'}</span>
             <div class="product-rating">
               <i data-lucide="star"></i>
-              <span>${prod.rating}</span>
+              <span>${ratingValue}</span>
             </div>
           </div>
 
-          <h3 class="product-title" onclick="openProductModal('${prod.id}')">${prod.title}</h3>
+          <h3 class="product-title" onclick="openProductModal(${prod.id})">${escapeHtml(prod.name)}</h3>
 
-          <div class="product-price-box">
-            <span class="product-price-original">R$ ${prod.originalPrice.toFixed(2).replace('.', ',')}</span>
-            <span class="product-price-current">R$ ${prod.currentPrice.toFixed(2).replace('.', ',')}</span>
-            ${prod.freeShipping ? '<span class="product-shipping-tag">Frete Grátis</span>' : ''}
+          <!-- Área Sem Preço Fixo: Foco no Benefício e no Clique -->
+          <div class="product-benefit-box">
+            <div class="benefit-item">
+              <i data-lucide="sparkles"></i>
+              <span>Preço Oficial com Desconto</span>
+            </div>
+            <span class="product-shipping-tag">Frete Grátis</span>
           </div>
 
           <div class="product-card-footer">
-            <a href="${prod.affiliateUrl}" 
+            <a href="${destinationUrl}" 
                target="_blank" 
                rel="noopener noreferrer sponsored" 
                class="btn-buy-affiliate">
-              <span>Ver Oferta na ${prod.store}</span>
+              <span>Conferir Oferta na Loja</span>
               <i data-lucide="external-link"></i>
             </a>
-            <button class="btn-quick-view" onclick="openProductModal('${prod.id}')" title="Ver Detalhes">
+            <button class="btn-quick-view" onclick="openProductModal(${prod.id})" title="Ver Detalhes">
               <i data-lucide="eye"></i>
             </button>
           </div>
@@ -315,13 +243,13 @@ function renderProducts() {
 }
 
 // ===================================================================
-// RENDERIZAÇÃO DE LOOKS (PINTEREST STYLE)
+// LOOKS INSPIRATIONS
 // ===================================================================
 function renderLooks() {
   const container = document.getElementById('looksGrid');
-  if (!container || !allLooks.length) return;
+  if (!container) return;
 
-  container.innerHTML = allLooks.map(look => {
+  container.innerHTML = CURATED_LOOKS.map(look => {
     const pinUrl = `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(window.location.href)}&media=${encodeURIComponent(look.imageUrl)}&description=${encodeURIComponent(look.title + ' - Achadinhos Femininos')}`;
 
     return `
@@ -330,7 +258,7 @@ function renderLooks() {
           <img src="${look.imageUrl}" alt="${look.title}" loading="lazy">
           <span class="look-badge">${look.occasion}</span>
           <a href="${pinUrl}" target="_blank" rel="noopener noreferrer" class="look-pinterest-btn" title="Salvar no Pinterest">
-            <i data-lucide="pin"></i> <span>Salvar Pin</span>
+            <i data-lucide="pin"></i> <span>Salvar no Pinterest</span>
           </a>
         </div>
         <div class="look-content">
@@ -341,7 +269,7 @@ function renderLooks() {
               <div class="look-piece-item">
                 <span>${piece.name}</span>
                 <a href="${piece.link}" class="look-piece-link">
-                  ${piece.price} na ${piece.store} <i data-lucide="chevron-right"></i>
+                  Ver na ${piece.store} <i data-lucide="chevron-right"></i>
                 </a>
               </div>
             `).join('')}
@@ -357,14 +285,13 @@ function renderLooks() {
 // ===================================================================
 // URL DE COMPARTILHAMENTO PINTEREST
 // ===================================================================
-function getPinterestShareUrl(product) {
-  const currentUrl = window.location.href;
-  const description = `${product.title} por apenas R$ ${product.currentPrice.toFixed(2).replace('.', ',')} na ${product.store}! Achadinho imperdível.`;
-  return `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(currentUrl)}&media=${encodeURIComponent(product.imageUrl)}&description=${encodeURIComponent(description)}`;
+function getPinterestShareUrl(product, storeLabel, destinationUrl) {
+  const description = `${product.name} | Achadinho da ${storeLabel}! Confira detalhes, fotos reais e cupom de frete grátis no site.`;
+  return `https://pinterest.com/pin/create/button/?url=${encodeURIComponent(destinationUrl)}&media=${encodeURIComponent(product.image)}&description=${encodeURIComponent(description)}`;
 }
 
 // ===================================================================
-// MODAL DE DETALHES
+// MODAL DE DETALHES (SEM PREÇO NUMÉRICO)
 // ===================================================================
 function openProductModal(productId) {
   const prod = allProducts.find(p => p.id === productId);
@@ -372,42 +299,50 @@ function openProductModal(productId) {
 
   const modal = document.getElementById('productModal');
   const body = document.getElementById('modalBody');
-  const pinterestUrl = getPinterestShareUrl(prod);
+  const storeLabel = (prod.source === 'mercadolivre') ? 'Mercado Livre' : 'Shopee';
+  const storeClass = (prod.source === 'mercadolivre') ? 'MercadoLivre' : 'Shopee';
+  const destinationUrl = prod.affiliate_url && prod.affiliate_url !== '#' ? prod.affiliate_url : 'https://shopee.com.br';
+  const pinterestUrl = getPinterestShareUrl(prod, storeLabel, destinationUrl);
 
   body.innerHTML = `
     <div class="modal-grid">
       <div class="modal-image-col">
-        <img src="${prod.imageUrl}" alt="${prod.title}">
+        <img src="${prod.image}" alt="${escapeHtml(prod.name)}">
       </div>
 
       <div class="modal-info-col">
-        <span class="modal-store-tag store-badge ${prod.store}">${prod.store} • ${prod.category}</span>
-        <h2 class="modal-product-title">${prod.title}</h2>
+        <span class="modal-store-tag store-badge ${storeClass}">${storeLabel} • ${prod.category || 'Moda Feminina'}</span>
+        <h2 class="modal-product-title">${escapeHtml(prod.name)}</h2>
 
-        <div class="modal-price-box">
-          <span class="old-price">R$ ${prod.originalPrice.toFixed(2).replace('.', ',')}</span>
-          <span class="new-price" style="color: var(--color-primary); font-size: 1.75rem;">R$ ${prod.currentPrice.toFixed(2).replace('.', ',')}</span>
-          <span class="discount-badge">-${prod.discountPercentage}% OFF</span>
+        <div class="modal-notice-box">
+          <div class="notice-badge"><i data-lucide="tag"></i> Cupom e Frete Grátis Disponíveis</div>
+          <p class="notice-sub">Os valores e cupons são atualizados em tempo real diretamente na loja parceira.</p>
         </div>
 
-        <p class="modal-desc">${prod.description}</p>
+        <p class="modal-desc">${escapeHtml(prod.description || 'Peça queridinha com altíssima avaliação das compradoras, caimento impecável e excelente custo-benefício.')}</p>
 
         <div class="modal-features">
-          ${(prod.features || []).map(f => `
-            <div class="modal-feature-item">
-              <i data-lucide="check-circle-2"></i>
-              <span>${f}</span>
-            </div>
-          `).join('')}
+          <div class="modal-feature-item">
+            <i data-lucide="check-circle-2"></i>
+            <span>Loja Verificada na ${storeLabel}</span>
+          </div>
+          <div class="modal-feature-item">
+            <i data-lucide="check-circle-2"></i>
+            <span>Avaliação Média: ${prod.rating || '4.9'} ★ de clientes satisfeitas</span>
+          </div>
+          <div class="modal-feature-item">
+            <i data-lucide="check-circle-2"></i>
+            <span>Garantia de Compra Segura e Entrega Rápida</span>
+          </div>
         </div>
 
         <div class="modal-actions-box">
-          <a href="${prod.affiliateUrl}" 
+          <a href="${destinationUrl}" 
              target="_blank" 
              rel="noopener noreferrer sponsored" 
              class="btn btn-primary" 
              style="width: 100%; justify-content: center; font-size: 1rem; padding: 1rem;">
-            Ir para a Loja Oficial (${prod.store}) <i data-lucide="external-link"></i>
+            Conferir Preço Oficial na ${storeLabel} <i data-lucide="external-link"></i>
           </a>
           <a href="${pinterestUrl}" 
              target="_blank" 
@@ -432,10 +367,12 @@ function closeModal() {
 }
 
 // ===================================================================
-// EVENT LISTENERS & INTERAÇÕES
+// EVENT LISTENERS & FILTROS
 // ===================================================================
+let searchDebounceTimeout = null;
+
 function setupEventListeners() {
-  // Chips de Categoria
+  // Filtro por Categoria (Chips)
   const chipContainer = document.getElementById('categoryChips');
   if (chipContainer) {
     chipContainer.addEventListener('click', (e) => {
@@ -444,18 +381,22 @@ function setupEventListeners() {
       document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
       btn.classList.add('active');
       activeCategory = btn.dataset.category || 'all';
-      renderProducts();
+      fetchProductsFromSupabase(true);
     });
   }
 
-  // Busca em Tempo Real
+  // Busca em Tempo Real com Debounce
   const searchInput = document.getElementById('searchInput');
   const clearSearch = document.getElementById('clearSearch');
   if (searchInput) {
     searchInput.addEventListener('input', (e) => {
       currentSearch = e.target.value;
       if (clearSearch) clearSearch.style.display = currentSearch ? 'flex' : 'none';
-      renderProducts();
+      
+      clearTimeout(searchDebounceTimeout);
+      searchDebounceTimeout = setTimeout(() => {
+        fetchProductsFromSupabase(true);
+      }, 350);
     });
   }
 
@@ -464,29 +405,37 @@ function setupEventListeners() {
       if (searchInput) searchInput.value = '';
       currentSearch = '';
       clearSearch.style.display = 'none';
-      renderProducts();
+      fetchProductsFromSupabase(true);
     });
   }
 
-  // Filtro de Loja
+  // Filtro por Loja (Shopee, Mercado Livre)
   const storeFilter = document.getElementById('storeFilter');
   if (storeFilter) {
     storeFilter.addEventListener('change', (e) => {
       activeStore = e.target.value;
-      renderProducts();
+      fetchProductsFromSupabase(true);
     });
   }
 
-  // Filtro de Ordenação
+  // Ordenação
   const sortFilter = document.getElementById('sortFilter');
   if (sortFilter) {
     sortFilter.addEventListener('change', (e) => {
       currentSort = e.target.value;
-      renderProducts();
+      fetchProductsFromSupabase(true);
     });
   }
 
-  // Botão Limpar Filtros do Estado Vazio
+  // Botão Carregar Mais
+  const loadMoreBtn = document.getElementById('btnLoadMore');
+  if (loadMoreBtn) {
+    loadMoreBtn.addEventListener('click', () => {
+      fetchProductsFromSupabase(false);
+    });
+  }
+
+  // Reset de Filtros
   const resetBtn = document.getElementById('resetFiltersBtn');
   if (resetBtn) {
     resetBtn.addEventListener('click', () => {
@@ -498,11 +447,11 @@ function setupEventListeners() {
       if (storeFilter) storeFilter.value = 'all';
       document.querySelectorAll('.chip-item').forEach(c => c.classList.remove('active'));
       document.querySelector('.chip-item[data-category="all"]')?.classList.add('active');
-      renderProducts();
+      fetchProductsFromSupabase(true);
     });
   }
 
-  // Modal Close
+  // Fechar Modal
   const closeBtn = document.getElementById('closeModalBtn');
   const modal = document.getElementById('productModal');
   if (closeBtn) closeBtn.addEventListener('click', closeModal);
@@ -518,7 +467,7 @@ function setupEventListeners() {
 }
 
 // ===================================================================
-// FAVORITOS (LOCALSTORAGE)
+// FAVORITOS
 // ===================================================================
 function toggleWishlist(productId) {
   if (wishlist.includes(productId)) {
@@ -528,7 +477,7 @@ function toggleWishlist(productId) {
   }
   localStorage.setItem('aura_wishlist', JSON.stringify(wishlist));
   updateWishlistBadge();
-  renderProducts();
+  renderProductsGrid();
 }
 
 function updateWishlistBadge() {
@@ -537,10 +486,20 @@ function updateWishlistBadge() {
 }
 
 // ===================================================================
-// LUCIDE ICONS REFRESH
+// UTILITÁRIOS
 // ===================================================================
 function refreshIcons() {
   if (window.lucide && typeof window.lucide.createIcons === 'function') {
     window.lucide.createIcons();
   }
+}
+
+function escapeHtml(text) {
+  if (!text) return '';
+  return text
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#039;');
 }

@@ -1,6 +1,6 @@
 """
 Aura Moda - Publicador Automático de Pins no Pinterest (API v5)
-Documentação oficial: https://developers.pinterest.com/docs/api/v5/
+Integrado com o Supabase e Catálogo de Afiliados
 """
 
 import os
@@ -8,10 +8,14 @@ import json
 import urllib.request
 import urllib.error
 
-# Configurações (Preencha via variáveis de ambiente ou edite aqui)
+# Configurações do Pinterest
 PINTEREST_ACCESS_TOKEN = os.getenv("PINTEREST_ACCESS_TOKEN", "SEU_ACCESS_TOKEN_AQUI")
 PINTEREST_BOARD_ID = os.getenv("PINTEREST_BOARD_ID", "SEU_BOARD_ID_AQUI")
 SITE_URL = os.getenv("SITE_URL", "https://seu-dominio.com")
+
+# Configurações do Supabase (Mesmo banco de onde o site consome)
+SUPABASE_URL = "https://edzagtvukayclklhvokk.supabase.co/rest/v1"
+SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVkemFndHZ1a2F5Y2xrbGh2b2trIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODUwNjgzNTQsImV4cCI6MjEwMDY0NDM1NH0.dAfwIDKyLB-KCFCxZkWIIO_fWibhOXa2Ax_RT3KFXjM"
 
 def create_pin(title, description, link, image_url, board_id=None):
     """
@@ -19,7 +23,7 @@ def create_pin(title, description, link, image_url, board_id=None):
     """
     board_id = board_id or PINTEREST_BOARD_ID
     if board_id == "SEU_BOARD_ID_AQUI" or PINTEREST_ACCESS_TOKEN == "SEU_ACCESS_TOKEN_AQUI":
-        print("[ERRO] Configure PINTEREST_ACCESS_TOKEN e PINTEREST_BOARD_ID antes de rodar.")
+        print("[ERRO] Configure PINTEREST_ACCESS_TOKEN e PINTEREST_BOARD_ID nas variáveis de ambiente.")
         return None
 
     endpoint = "https://api.pinterest.com/v5/pins"
@@ -31,7 +35,7 @@ def create_pin(title, description, link, image_url, board_id=None):
 
     payload = {
         "board_id": board_id,
-        "title": title[:100],  # limite do Pinterest
+        "title": title[:100],
         "description": description[:500],
         "link": link,
         "media_source": {
@@ -46,47 +50,54 @@ def create_pin(title, description, link, image_url, board_id=None):
     try:
         with urllib.request.urlopen(req) as response:
             res_data = json.loads(response.read().decode("utf-8"))
-            print(f"[SUCESSO] Pin criado com sucesso! ID: {res_data.get('id')}")
-            print(f"URL: https://www.pinterest.com/pin/{res_data.get('id')}/")
+            print(f"[SUCESSO] Pin criado! ID: {res_data.get('id')}")
             return res_data
     except urllib.error.HTTPError as e:
         error_body = e.read().decode("utf-8")
         print(f"[ERRO HTTP {e.code}] Falha ao criar Pin: {error_body}")
         return None
     except Exception as e:
-        print(f"[ERRO INESPERADO] {str(e)}")
+        print(f"[ERRO] {str(e)}")
         return None
 
-def publish_all_new_products(products_json_path="products.json"):
+def fetch_latest_products_from_supabase(limit=20):
     """
-    Lê o arquivo products.json e publica os produtos no Pinterest.
+    Puxa os produtos mais recentes diretamente do Supabase.
     """
-    if not os.path.exists(products_json_path):
-        print(f"[AVISO] Arquivo {products_json_path} não encontrado.")
-        return
+    endpoint = f"{SUPABASE_URL}/produtos?select=id,name,image,affiliate_url,source,category&order=id.desc&limit={limit}"
+    headers = {
+        "apikey": SUPABASE_ANON_KEY,
+        "Authorization": f"Bearer {SUPABASE_ANON_KEY}"
+    }
 
-    with open(products_json_path, "r", encoding="utf-8") as f:
-        data = json.load(f)
+    req = urllib.request.Request(endpoint, headers=headers)
+    try:
+        with urllib.request.urlopen(req) as resp:
+            return json.loads(resp.read().decode("utf-8"))
+    except Exception as e:
+        print(f"[ERRO] Não foi possível ler produtos do Supabase: {e}")
+        return []
 
-    products = data.get("products", [])
-    print(f"Encontrados {len(products)} produtos no catálogo.")
+def publish_from_supabase(limit=10):
+    """
+    Publica os últimos produtos do Supabase no Pinterest.
+    """
+    products = fetch_latest_products_from_supabase(limit=limit)
+    print(f"Puxados {len(products)} produtos recentes do Supabase.")
 
     for p in products:
-        title = f"{p['title']} | Achadinho {p['store']}"
+        store = "Mercado Livre" if p.get("source") == "mercadolivre" else "Shopee"
+        title = f"{p['name'][:75]} | Achadinho {store}"
         desc = (
-            f"Achadinho de R$ {p['originalPrice']:.2f} por apenas R$ {p['currentPrice']:.2f} na {p['store']}! "
-            f"Clique para ver o link oficial com cupom e frete grátis no nosso site. {p['description']}"
+            f"Achadinho feminino imperdível na {store}! Peça queridinha com cupom e frete facilitado. "
+            f"Confira todos os detalhes e garanta a sua no link oficial."
         )
-        # Link para onde o usuário irá ao clicar no Pin (seu site ou link direto de afiliado)
-        dest_link = p.get("affiliateUrl") or SITE_URL
-        img_url = p["imageUrl"]
+        link = p.get("affiliate_url") or SITE_URL
+        img_url = p["image"]
 
-        print(f"\nPublicando: {title[:50]}...")
-        create_pin(title, desc, dest_link, img_url)
+        print(f"\nPublicando Pin: {title[:45]}...")
+        create_pin(title, desc, link, img_url)
 
 if __name__ == "__main__":
-    print("=== AURA MODA - PUBLICADOR PINTEREST API v5 ===")
-    print("Para rodar:")
-    print("1. Defina as variáveis de ambiente PINTEREST_ACCESS_TOKEN e PINTEREST_BOARD_ID")
-    print("2. Execute: python scripts/pinterest_poster.py")
-    publish_all_new_products()
+    print("=== AURA MODA - PUBLICADOR PINTEREST API v5 COM SUPABASE ===")
+    publish_from_supabase(limit=5)
