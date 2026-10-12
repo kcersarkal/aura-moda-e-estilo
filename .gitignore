@@ -1,0 +1,11 @@
+# Tokens e Variáveis de Ambiente
+.env
+*.env
+.env.local
+
+# Dependências e caches
+__pycache__/
+*.py[cod]
+node_modules/
+.DS_Store
+Thumbs.db
