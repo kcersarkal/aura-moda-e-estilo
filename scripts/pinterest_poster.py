@@ -11,7 +11,7 @@ import urllib.error
 # Configurações do Pinterest
 PINTEREST_ACCESS_TOKEN = os.getenv("PINTEREST_ACCESS_TOKEN", "SEU_ACCESS_TOKEN_AQUI")
 PINTEREST_BOARD_ID = os.getenv("PINTEREST_BOARD_ID", "SEU_BOARD_ID_AQUI")
-SITE_URL = os.getenv("SITE_URL", "https://seu-dominio.com")
+SITE_URL = os.getenv("SITE_URL", "https://auramoda.prime.blog.br")
 
 def create_pin(title, description, link, image_url, board_id=None):
     """
