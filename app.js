@@ -54,7 +54,7 @@ async function loadSidebarProductsFromSupabase() {
 
   try {
     // Busca apenas as categorias prioritárias do usuário com melhor avaliação
-    const endpoint = `${SUPABASE_URL}/produtos?select=id,name,image,affiliate_url,source,category&or=(category.eq.Vestidos,category.eq.Calcas,category.eq.Conjuntos,category.eq.Shorts)&order=rating.desc,id.desc&limit=5`;
+    const endpoint = `${SUPABASE_URL}/produtos?select=id,name,image,affiliate_url,source,category&or=(category.eq.Vestidos,category.eq.Calcas,category.eq.Conjuntos,category.eq.Shorts,category.eq.Calcados)&order=rating.desc,id.desc&limit=5`;
     const res = await fetch(endpoint, {
       headers: {
         'apikey': SUPABASE_ANON_KEY,
